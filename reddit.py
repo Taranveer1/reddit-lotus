@@ -1,39 +1,31 @@
 # Reddit API fetch + response parsing
 import requests
 
-#url for the reddit community we are parsing the posts from
-REDDIT_URL = "https://www.reddit.com/r/healthcare.json" 
-
+REDDIT_URL = "https://www.reddit.com/r/healthcare.json"
 HEADERS = {
-    "User-Agent": "reddit-lotus-bot/0.1 by tsflora"
+    "User-Agent": "linux:reddit-lotus-bot:v0.1 (by /u/tsflora)"
 }
 
-#fetches the top posts from the subreddit 
-def fetch_healthcare_posts(limit=10):
-    response = requests.get(REDDIT_URL, headers=HEADERS, params={"limit": limit})
 
-    if response.status_code != 200:
-        raise Exception(f"Reddit API error: {response.status_code}")
+def fetch_healthcare_posts() -> list[dict]:
+    """Fetch current front page posts from r/healthcare."""
+    response = requests.get(REDDIT_URL, headers=HEADERS, timeout=10)
+    response.raise_for_status()
 
-    data = response.json()
-
+    # Parse each post into a clean schema
     posts = []
-    for child in data["data"]["children"]:
-        post_data = child["data"]
-
-          # organizes all the reddit responses into a clean schema
+    for child in response.json()["data"]["children"]:
+        post = child["data"]
         posts.append({
-            "id": post_data["id"],
-            "title": post_data["title"],
-            "author": post_data["author"],
-            "link": f"https://www.reddit.com{post_data['permalink']}"
+            "id": post["id"],
+            "title": post["title"],
+            "author": post["author"],
+            "link": f"https://www.reddit.com{post['permalink']}",
         })
 
     return posts
 
-#personal local testing 
-if __name__ == "__main__":
-    posts = fetch_healthcare_posts()
 
-    for post in posts:
+if __name__ == "__main__":
+    for post in fetch_healthcare_posts():
         print(post)
