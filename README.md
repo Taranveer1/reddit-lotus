@@ -265,6 +265,7 @@ If productionizing:
 - Add rate limit backoff handling
 - Add unit and concurrency tests
 - Add event schema versioning
+- Add TTL-based eviction to seen_ids set to prevent unbounded growth in production
 
 ---
 
