@@ -320,4 +320,4 @@ The core challenge is not fetching Reddit posts.
 
 The core challenge is guaranteeing accurate, race-free event emission.
 
-That is what this system is built to solve.
+That is what this system is built to solv
