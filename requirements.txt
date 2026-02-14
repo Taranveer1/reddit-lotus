@@ -2,3 +2,4 @@ httpx
 requests
 fastapi
 jinja2
+python-dotenv

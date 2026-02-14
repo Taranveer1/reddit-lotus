@@ -24,7 +24,7 @@ def send_event(post: dict) -> None:
             }
         ],
     }
-    response = httpx.post(AMPLITUDE_URL, json=payload)
+    response = httpx.post(AMPLITUDE_URL, json=payload, timeout=10)
     response.raise_for_status()
 
 
