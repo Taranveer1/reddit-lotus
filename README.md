@@ -46,8 +46,11 @@ The key correctness property: **posts are marked as seen only after their Amplit
 ```
 new_posts = filter_new(posts)       # check only, no side effects
 for post in new_posts:
-    send_event(post)                # send to Amplitude
-    sent_posts.append(post)         # track successes
+    try:
+        send_event(post)            # send to Amplitude
+        sent_posts.append(post)     # track successes
+    except Exception:
+        log failure, continue       # don't block remaining posts
 mark_seen(sent_posts)               # persist only after success
 ```
 
