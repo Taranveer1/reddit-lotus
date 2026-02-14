@@ -1,0 +1,4 @@
+httpx
+requests
+fastapi
+jinja2

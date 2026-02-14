@@ -3,7 +3,7 @@
 import modal
 
 from reddit import fetch_healthcare_posts
-from storage import filter_new_and_mark_seen, load_current_posts, save_current_posts
+from storage import filter_new, mark_seen, load_current_posts, save_current_posts
 from amplitude import send_event
 
 app = modal.App("reddit-lotus")
@@ -29,18 +29,19 @@ def poll_reddit():
 
     save_current_posts(posts)
 
-    new_posts = filter_new_and_mark_seen(posts)
+    new_posts = filter_new(posts)
     print(f"Fetched {len(posts)} posts, {len(new_posts)} are new.")
 
-    sent = 0
+    sent_posts = []
     for post in new_posts:
         try:
             send_event(post)
-            sent += 1
+            sent_posts.append(post)
         except Exception as e:
             print(f"Failed to send event for post {post['id']}: {e}")
 
-    print(f"Sent {sent}/{len(new_posts)} events to Amplitude.")
+    mark_seen(sent_posts)
+    print(f"Sent {len(sent_posts)}/{len(new_posts)} events to Amplitude.")
 
 
 @app.function(image=image)
