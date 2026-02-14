@@ -45,6 +45,17 @@
             color: #787c7e;
             font-style: italic;
         }
+        footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #e0e0e0;
+            color: #787c7e;
+            font-size: 0.85em;
+            text-align: center;
+        }
+        .heart {
+            color: #e25555;
+        }
     </style>
 </head>
 <body>
@@ -61,5 +72,9 @@
     {% else %}
     <p class="empty">No posts yet. The poller hasn't run or no posts were fetched.</p>
     {% endif %}
+    <footer>
+        <p>Last updated: {{ last_updated }}</p>
+        <p>Crafted with <span class="heart">&hearts;</span> by Taranveer Flora for Lotus Health AI</p>
+    </footer>
 </body>
 </html>

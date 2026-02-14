@@ -56,7 +56,12 @@ def web():
 
     @web_app.get("/", response_class=HTMLResponse)
     async def index(request: Request):
+        from datetime import datetime, timezone
+
         posts = load_current_posts()
-        return templates.TemplateResponse("index.html", {"request": request, "posts": posts})
+        now = datetime.now(timezone.utc).strftime("%B %d, %Y at %H:%M UTC")
+        return templates.TemplateResponse(
+            "index.html", {"request": request, "posts": posts, "last_updated": now}
+        )
 
     return web_app
